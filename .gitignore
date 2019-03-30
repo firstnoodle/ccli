@@ -2,7 +2,7 @@
 .DS_Store
 
 # the executable
-cli
+ccli
 
 *.~
 *.dll

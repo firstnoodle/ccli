@@ -37,7 +37,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(DEPENDENCIES)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 # link object files into executable..?
-cli: $(OBJECT_FILES)
+ccli: $(OBJECT_FILES)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 

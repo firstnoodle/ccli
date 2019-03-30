@@ -12,7 +12,7 @@
   @param args Null terminated list of arguments (including program).
   @return Always returns 1, to continue execution.
  *******************************************************************/
-int cli_launch(char **args) {
+int ccli_launch(char **args) {
 	pid_t pid;
 	int status;
 
@@ -20,12 +20,12 @@ int cli_launch(char **args) {
 	if (pid == 0) {
 		// Child process
 		if (execvp(args[0], args) == -1) {
-			perror("cli");
+			perror("ccli");
 		}
 		exit(EXIT_FAILURE);
 	} else if (pid < 0) {
 		// Error forking
-		perror("cli");
+		perror("ccli");
 	} else {
 		// Parent process
 		do {
@@ -41,7 +41,7 @@ int cli_launch(char **args) {
    @param args Null terminated list of arguments.
    @return 1 if the shell should continue running, 0 if it should terminate
  ***************************************************************************/
-int cli_execute(char **args) {
+int ccli_execute(char **args) {
 	int i;
 
 	if (args[0] == NULL) {
@@ -49,13 +49,13 @@ int cli_execute(char **args) {
 		return 1;
 	}
 
-	for (i = 0; i < cli_num_builtins(); i++) {
+	for (i = 0; i < ccli_num_builtins(); i++) {
 		if (strcmp(args[0], builtin_str[i]) == 0) {
 			return (*builtin_func[i])(args);
 		}
 	}
 
-	return cli_launch(args);
+	return ccli_launch(args);
 }
 
 
@@ -66,14 +66,14 @@ int cli_execute(char **args) {
 
 #define LSH_RL_BUFSIZE 1024
 
-char *cli_read_line(void) {
+char *ccli_read_line(void) {
 	int bufsize = LSH_RL_BUFSIZE;
 	int position = 0;
 	char *buffer = malloc(sizeof(char) * bufsize);
 	int c;
 
 	if (!buffer) {
-		fprintf(stderr, "cli: allocation error\n");
+		fprintf(stderr, "ccli: allocation error\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -96,7 +96,7 @@ char *cli_read_line(void) {
 			bufsize += LSH_RL_BUFSIZE;
 			buffer = realloc(buffer, bufsize);
 			if (!buffer) {
-				fprintf(stderr, "cli: allocation error\n");
+				fprintf(stderr, "ccli: allocation error\n");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -113,13 +113,13 @@ char *cli_read_line(void) {
 #define LSH_TOK_BUFSIZE 64
 #define LSH_TOK_DELIM " \t\r\n\a"
 
-char **cli_split_line(char *line) {
+char **ccli_split_line(char *line) {
 	int bufsize = LSH_TOK_BUFSIZE, position = 0;
 	char **tokens = malloc(bufsize * sizeof(char*));
 	char *token, **tokens_backup;
 
 	if (!tokens) {
-		fprintf(stderr, "cli: allocation error\n");
+		fprintf(stderr, "ccli: allocation error\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -134,7 +134,7 @@ char **cli_split_line(char *line) {
 			tokens = realloc(tokens, bufsize * sizeof(char*));
 			if (!tokens) {
 				free(tokens_backup);
-				fprintf(stderr, "cli: allocation error\n");
+				fprintf(stderr, "ccli: allocation error\n");
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -149,16 +149,16 @@ char **cli_split_line(char *line) {
    @brief Loop getting input and executing it.
  *********************************************/
 
-void cli_loop(void) {
+void ccli_loop(void) {
 	char *line;
 	char **args;
 	int status;
 
 	do {
 		printf("> ");
-		line = cli_read_line();
-		args = cli_split_line(line);
-		status = cli_execute(args);
+		line = ccli_read_line();
+		args = ccli_split_line(line);
+		status = ccli_execute(args);
 
 		free(line);
 		free(args);
@@ -177,7 +177,7 @@ int main(int argc, char **argv) {
 	// 1. Load config files, if any.
 
 	// 2. Run command loop.
-	cli_loop();
+	ccli_loop();
 
 	// 3. Perform any shutdown/cleanup.
 

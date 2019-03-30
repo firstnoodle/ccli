@@ -5,13 +5,13 @@
 
 /* Function Declarations for builtin shell commands:
 ****************************************************/
-int cli_cd(char **args);
-int cli_echo(char **args);
-int cli_help(char **args);
-int cli_exit(char **args);
+int ccli_cd(char **args);
+int ccli_echo(char **args);
+int ccli_help(char **args);
+int ccli_exit(char **args);
 
 /* List of builtin commands, followed by their corresponding functions.
 ***********************************************************************/
 char *builtin_str[];
 int (*builtin_func[]) (char **);
-int cli_num_builtins();
+int ccli_num_builtins();

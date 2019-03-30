@@ -11,13 +11,13 @@ char *builtin_str[] = {
 };
 
 int (*builtin_func[]) (char **) = {
-	&cli_cd,
-	&cli_echo,
-	&cli_help,
-	&cli_exit
+	&ccli_cd,
+	&ccli_echo,
+	&ccli_help,
+	&ccli_exit
 };
 
-int cli_num_builtins() {
+int ccli_num_builtins() {
 	return sizeof(builtin_str) / sizeof(char *);
 }
 
@@ -29,12 +29,12 @@ int cli_num_builtins() {
    @param args List of args.  args[0] is "cd".  args[1] is the directory.
    @return Always returns 1, to continue executing.
 *************************************************************************/
-int cli_cd(char **args) {
+int ccli_cd(char **args) {
 	if (args[1] == NULL) {
-		fprintf(stderr, "cli: expected argument to \"cd\"\n");
+		fprintf(stderr, "ccli: expected argument to \"cd\"\n");
 	} else {
 		if (chdir(args[1]) != 0) {
-			perror("cli");
+			perror("ccli");
 		}
 	}
 	return 1;
@@ -47,9 +47,9 @@ int cli_cd(char **args) {
    @return Always returns 1, to continue executing.
 ***************************************************/
 
-int cli_echo(char **args) {
+int ccli_echo(char **args) {
 	if (args[1] == NULL) {
-		fprintf(stderr, "cli: expected argument to \"echo\"\n");
+		fprintf(stderr, "ccli: expected argument to \"echo\"\n");
 	} else {
 		printf("%s\n", args[1]);
 	}
@@ -63,11 +63,11 @@ int cli_echo(char **args) {
    @return Always returns 1, to continue executing.
 ***************************************************/
 
-int cli_help(char **args) {
+int ccli_help(char **args) {
 	int i;
 	printf("Type program names and arguments, and hit enter.\n");
 
-	for (i = 0; i < cli_num_builtins(); i++) {
+	for (i = 0; i < ccli_num_builtins(); i++) {
 		printf("  %s\n", builtin_str[i]);
 	}
 
@@ -82,7 +82,7 @@ int cli_help(char **args) {
    @return Always returns 0, to terminate execution.
  ***************************************************/
 
-int cli_exit(char **args) {
+int ccli_exit(char **args) {
 	return 0;
 }
 
