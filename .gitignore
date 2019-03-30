@@ -1,0 +1,17 @@
+
+.DS_Store
+
+# the executable
+cli
+
+*.~
+*.dll
+*.lib
+*.o
+*.out
+*.so
+*.swo
+*.swp
+
+o.obj
+thumbs.db
